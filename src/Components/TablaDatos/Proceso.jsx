@@ -3,10 +3,10 @@ import Input from './Input';
 
 const Proceso = ({ bloqueos }) => {
     return (
-        <tr>
-            <td> <input type="text" className='h-8 border-solid border-2 border-indigo-700 text-center' /> </td>
-            <td><Input></Input></td>
-            <td><Input></Input></td>
+        <tr className='bg-indigo-700'>
+            <td> <Input isNumeric={false}></Input> </td>
+            <td><Input isNumeric={true}></Input></td>
+            <td><Input isNumeric={true}></Input></td>
             {[...Array(bloqueos)].map((valor, index) => {
                 return (
                     <td key={index}>

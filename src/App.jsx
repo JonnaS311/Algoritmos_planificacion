@@ -1,12 +1,13 @@
 import './App.css';
-import Principal from './Pages/Principal';
 import Nav from './Routes/Nav';
+import Rutas from './Routes/Rutas';
 
 function App() {
   return (
     <div className="App">
-      <Nav></Nav>
-      <Principal></Principal>
+      <Nav>
+        <Rutas />
+      </Nav>
     </div>
   );
 }

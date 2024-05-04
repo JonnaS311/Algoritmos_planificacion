@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Input = () => {
+const Input = ({isNumeric}) => {
     return (
         <div className='w-full max-w-full bg-black'>
-            <input type="text" className='h-8 border-solid border-2 border-indigo-700 text-center' maxlength="2"/>  
+            {isNumeric && (<input type="number" className='h-8 border-solid border-2 border-indigo-700 text-center input' maxlength="2"/>  )}
+            {!isNumeric && (<input type="text" className='h-8 border-solid border-2 border-indigo-700 text-center input' />  )}
         </div>
     );
 };
