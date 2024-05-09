@@ -1,52 +1,53 @@
 class Proceso{
-    constructor(nombre,llegada,ejecucion,bloqueo1,bloqueo2){
-        this.nombre=nombre;
-        this.llegada=llegada;
-        this.ejecucion=ejecucion;
-        this.bloqueo1=bloqueo1;
-        this.bloqueo2=bloqueo2;
-        this.ejecutado=0;
-        this.tiempoBloqueo=0;
+    constructor(nombre,llegada,ejecucion,cantidadBloqueos,bloqueos){
+        this.nombre=nombre
+        this.llegada=llegada
+        this.ejecucion=ejecucion
+        this.cantidadBloqueos=cantidadBloqueos
+        this.bloqueos=bloqueos
+        this.ejecutado=0
+        this.tiempoBloqueo=0
         this.estado="Nuevo"
     }
+    
     // Getter y setter para 'nombre'
     getNombre() {
-    return this.nombre;
+    return this.nombre
     }
     setNombre(nuevoNombre) {
-    this.nombre = nuevoNombre;
+    this.nombre = nuevoNombre
     }
 
     // Getter y setter para 'llegada'
     getLlegada() {
-    return this.llegada;
+    return this.llegada
     }
     setLlegada(nuevaLlegada) {
-    this.llegada = nuevaLlegada;
+    this.llegada = nuevaLlegada
     }
 
     // Getter y setter para 'ejecucion'
     getEjecucion() {
-    return this.ejecucion;
+    return this.ejecucion
     }
     setEjecucion(nuevaEjecucion) {
-    this.ejecucion = nuevaEjecucion;
+    this.ejecucion = nuevaEjecucion
     }
 
-    // Getter y setter para 'bloqueo1'
-    getBloqueo1() {
-    return this.bloqueo1;
+    // Getter y setter para 'cantidadBloqueos'
+    getCantidadBloqueos() {
+    return this.cantidadBloqueos
     }
-    setBloqueo1(nuevoBloqueo1) {
-    this.bloqueo1 = nuevoBloqueo1;
+    setCantidadBloqueos(nuevoCantidadBloqueos) {
+    this.cantidadBloqueos = nuevoCantidadBloqueos
     }
 
-    // Getter y setter para 'bloqueo2'
-    getBloqueo2() {
-    return this.bloqueo2;
+    // Getter y setter para 'bloqueos'
+    getBloqueos() {
+    return this.bloqueos
     }
-    setBloqueo2(nuevoBloqueo2) {
-    this.bloqueo2 = nuevoBloqueo2;
+    setBloqueos(nuevoBloqueos) {
+    this.bloqueos = nuevoBloqueos
     }
 }
 
@@ -66,7 +67,18 @@ let Algoritmo
 function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
 
     tablaInstrucciones.forEach((p) => {
-        listaProcesos.push(new Proceso(p[0], p[1], p[2], p[3], p[4]));
+        let numeroDeBloqueos = p.length - 3
+        let arrayBloqueos = []
+        if (numeroDeBloqueos > 0){
+            for (let i = 3; i < p.length; i++){
+                if (p[i] !== null){
+                    arrayBloqueos.push(p[i])
+                } else {
+                    numeroDeBloqueos--
+                }
+            }
+        }
+        listaProcesos.push(new Proceso(p[0], p[1], p[2], numeroDeBloqueos, arrayBloqueos));
         tablaSalida.push({ nombre: p[0], arr: [] });
     });
 
@@ -136,21 +148,18 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
 
         if (procesoActual) {
             procesoActual.ejecutado++;
-            if (procesoActual.bloqueo1 && procesoActual.ejecutado == procesoActual.bloqueo1[0]) {
-                procesoActual.estado = "Bloqueado";
-                procesoActual.tiempoBloqueo = procesoActual.bloqueo1[1];
-                procesoActual = getProcesoSiguiente();
-                if (procesoActual) {
-                    procesoActual.estado = "Ejecucion";
+            if (procesoActual.cantidadBloqueos > 0) {
+                if (procesoActual.ejecutado == procesoActual.bloqueos[0][0]){
+                    procesoActual.estado = "Bloqueado"
+                    procesoActual.tiempoBloqueo = procesoActual.bloqueos[0][1]
+                    procesoActual.cantidadBloqueos--
+                    procesoActual.bloqueos.shift()
+                    procesoActual = getProcesoSiguiente();
+                    if (procesoActual) {
+                        procesoActual.estado = "Ejecucion";
+                    }
                 }
-            }
-            if (procesoActual.bloqueo2 && procesoActual.ejecutado == procesoActual.bloqueo2[0]) {
-                procesoActual.estado = "Bloqueado";
-                procesoActual.tiempoBloqueo = procesoActual.bloqueo2[1];
-                procesoActual = getProcesoSiguiente();
-                if (procesoActual) {
-                    procesoActual.estado = "Ejecucion";
-                }
+                
             }
         }
 
