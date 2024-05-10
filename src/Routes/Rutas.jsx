@@ -1,26 +1,29 @@
 import React from 'react';
 import Principal from '../Pages/Principal'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Graphic from '../Pages/Graphic';
 
-const Rutas = ({ FCFC, SPN, SRTF, RR }) => {
+const Rutas = () => {
     return (
         <div>
             <Routes>
-            <Route path='/' element={<Graphic></Graphic>}>
-                    {FCFC}
+                <Route path='/' element={<Graphic></Graphic>}>
+                    
                 </Route>
-                <Route path='/FCFC' element={<Principal>First come, first served</Principal>}>
-                    {FCFC}
+                <Route path='/FCFC' element={<Principal algoritmo={'FCFS'}>First come, first served</Principal>}>
+                  
                 </Route>
-                <Route path='/SPN' element={<Principal>Shorted process next</Principal>}>
-                    {SPN}
+                <Route path='/SJF' element={<Principal algoritmo={'SJF'}>Shorted job first</Principal>}>
+                
                 </Route>
-                <Route path='/SRTF' element={<Principal>Shortest remaining time first</Principal>}>
-                    {SRTF}
+                <Route path='/SRTF' element={<Principal algoritmo={'SRTF'}>Shortest remaining time first</Principal>}>
+              
                 </Route>
                 <Route path='/RR' element={<Principal>Round Robin</Principal>}>
-                    {RR}
+      
+                </Route>
+                <Route path='/Grafico' element={<Graphic></Graphic>}>
+
                 </Route>
             </Routes>
         </div>

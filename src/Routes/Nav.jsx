@@ -9,7 +9,7 @@ const Nav = ({children}) => {
                     <h1 className='text-xl'>Algoritmos de Planificación </h1>
                     <ul className='flex space-x-4 divide-x divide-x-2'>
                         <li className='hover:text-blue-200 pl-2'><Link to='/FCFC'>FCFS</Link></li>
-                        <li className='hover:text-blue-200 pl-2'><Link to='/SPN'>SPN</Link></li>
+                        <li className='hover:text-blue-200 pl-2'><Link to='/SJF'>SJF</Link></li>
                         <li className='hover:text-blue-200 pl-2'><Link to='/SRTF'>SRTF</Link></li>
                         <li className='hover:text-blue-200 pl-2'><Link to='/RR'>RR</Link></li>
                     </ul>

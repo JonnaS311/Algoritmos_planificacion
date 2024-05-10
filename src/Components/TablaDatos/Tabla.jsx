@@ -1,29 +1,42 @@
 import React, { useState } from 'react';
 import Proceso from './Proceso';
 import Boton from '../Boton';
-
-const Tabla = ({ bloqueos, procesos }) => {
+import { useTablaContext } from '../../Contexts/TablaDatos';
+const Tabla = () => {
     const [cantProcesos, setCantProcesos] = useState(1)
-    const [cantBloqueos, setCantBloqueos] = useState(4)
+    const [cantBloqueos, setCantBloqueos] = useState(1)
+    const {TablaDatos,setTablaDatos} = useTablaContext()
 
     const addProceso = (e) => {
         setCantProcesos(cantProcesos + 1)
+        TablaDatos.push([null,null,null,[null,null]])
+        setTablaDatos(Array.from(TablaDatos))
     }
 
     const removeProceso = (e) => {
         if (cantProcesos > 1) {
             setCantProcesos(cantProcesos - 1)
+            TablaDatos.pop()
+            setTablaDatos(Array.from(TablaDatos))
         }
 
     }
 
     const addBloqueo = (e) => {
         setCantBloqueos(cantBloqueos + 1)
+        for (let index = 0; index < TablaDatos.length; index++) {
+            TablaDatos[index].push([null,null])
+        }
+        setTablaDatos(Array.from(TablaDatos))
     }
 
     const removeBloqueo = (e) => {
         if (cantBloqueos > 1) {
             setCantBloqueos(cantBloqueos - 1)
+            for (let index = 0; index < TablaDatos.length; index++) {
+                TablaDatos[index].pop()
+            }
+            setTablaDatos(Array.from(TablaDatos))
         }
 
     }
@@ -39,7 +52,7 @@ const Tabla = ({ bloqueos, procesos }) => {
                             <th>Duración</th>
                             {[...Array(cantBloqueos)].map((valor, index) => {
                                 return (
-                                    <th>Bloqueo {index + 1}</th>
+                                    <th key={index}>Bloqueo {index + 1}</th>
                                 )
                             })}
                         </tr>
@@ -47,7 +60,7 @@ const Tabla = ({ bloqueos, procesos }) => {
                     <tbody>
                         {[...Array(cantProcesos)].map((value, index) => {
                             return (
-                                <Proceso bloqueos={cantBloqueos}></Proceso>
+                                <Proceso key={index} id={index} bloqueos={cantBloqueos}></Proceso>
                             )
                         })}
                     </tbody>
