@@ -61,11 +61,13 @@ let tablaInstrucciones = [["A", 0, 8, [3, 4], [7, 2]],
 
 
 let listaProcesos = []
-let tablaSalida = []
-let Algoritmo
+let tablaSalida = [] // { nombre: p[0], arr: [] } Está es la tabla para gráficar
+let estadistica = [] // nombre, retorno, tiempo perdido, tiempo de espera, penalidad, tiempo de respuesta
+let Algoritmo // FCFS ó SRTF ó SJF
 
 function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
 
+    // Se crean los objetos tipo proceso y la tabla de salida
     tablaInstrucciones.forEach((p) => {
         let numeroDeBloqueos = p.length - 3
         let arrayBloqueos = []
@@ -82,6 +84,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
         tablaSalida.push({ nombre: p[0], arr: [] });
     });
 
+    // Los condicionales de elección según el algoritmo de planificación
     const getProcesoSiguiente = () => {
         let procesosEspera = listaProcesos.filter((p) => p.estado == 'En espera');
         switch (Algoritmo) {
@@ -101,30 +104,63 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
                 return null;
         }
     };
+
+    // Se agrega el progreso a cada proceso
     const agregarColumnaTabla = () => {
         listaProcesos.forEach((p) => {
             let filaTabla = tablaSalida.find((f) => f.nombre == p.nombre);
             switch (p.estado) {
                 case "Nuevo":
-                    filaTabla.arr.push(0);
+                    filaTabla.arr.push(0); // Cuando todavía no ha llegado el proceso
                     break;
                 case "En espera":
-                    filaTabla.arr.push("EE");
+                    filaTabla.arr.push("EE");  // En espera
                     break;
                 case "Ejecucion":
-                    filaTabla.arr.push("E");
+                    filaTabla.arr.push("E"); // Ejecución
                     break;
                 case "Bloqueado":
-                    filaTabla.arr.push("B");
+                    filaTabla.arr.push("B"); // Bloqueado
                     break;
             }
         });
     };
 
+    const tablaEstadisticas = () => {
+        tablaSalida.forEach((p) => {
+            let ejecucion = 0
+            let bloqueo = 0
+            let enEspera = 0
+            let inicio = 0
+            let instateFin = p.arr.length - 1
+            let tiempoRespuesta = 0
+
+            let ejecucionEncontrada = false
+
+            p.arr.forEach((a) => {
+                if (a === "E"){
+                    ejecucion++
+                    ejecucionEncontrada = true
+                } 
+                if (a === "EE"){ enEspera++ } 
+                if (a === "B"){ bloqueo++ }
+                if (a === 0){ inicio++ }
+                if (a === "EE" && !ejecucionEncontrada){ tiempoRespuesta++ }
+            })
+            let retorno = instateFin - inicio
+            let timepoPerdido = retorno - ejecucion
+            let penalidad = (retorno / ejecucion).toFixed(2) // redondeado a dos decimales
+            estadistica.push([p.nombre, retorno, timepoPerdido, enEspera, penalidad, tiempoRespuesta])
+        })
+        return estadistica
+    }
+
     let procesoActual = listaProcesos[0];
     procesoActual.estado = "Ejecucion";
     let cicloReloj = 0;
 
+
+    // Método principal que administra todos los procesos (no sé que hace, pero lo hace)
     while (listaProcesos.filter((p) => p.estado !== 'Terminado').length > 0) {
         listaProcesos.forEach((p) => {
             if (p.llegada == cicloReloj && p.estado == "Nuevo") {
@@ -177,11 +213,12 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
             }
         }
     }
-
-    return tablaSalida;
+    tablaEstadisticas()
+    return tablaSalida, estadistica
 }
 
 
 
 AlgoritmosPlanificacion(tablaInstrucciones, "SJF")
 console.log(tablaSalida)
+console.log(estadistica)
