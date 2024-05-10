@@ -126,6 +126,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
         });
     };
 
+    // Creación de la tabla de estadísticas a partir de la tabla salida
     const tablaEstadisticas = () => {
         tablaSalida.forEach((p) => {
             let ejecucion = 0
