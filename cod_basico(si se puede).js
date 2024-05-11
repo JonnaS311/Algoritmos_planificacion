@@ -80,8 +80,10 @@ function AlgoritmosPlanificacion(tablaInstrucciones,Algoritmo) {
                 }
             }
         }
-        listaProcesos.push(new Proceso(p[0], p[1], p[2], numeroDeBloqueos, arrayBloqueos));
-        tablaSalida.push({ nombre: p[0], arr: [] });
+        arrayBloqueos.sort((a, b) => a[0] - b[0])
+        listaProcesos.push(new Proceso(p[0], p[1], p[2], numeroDeBloqueos, arrayBloqueos))
+        listaProcesos.sort((a, b) => a[1] - b[1])
+        tablaSalida.push({ nombre: p[0], arr: [] })
     });
 
     // Los condicionales de elección según el algoritmo de planificación
