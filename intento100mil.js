@@ -254,8 +254,8 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                         procesoActual.tiempoBloqueo = procesoActual.bloqueos[0][1]
                         procesoActual.cantidadBloqueos--
                         procesoActual.bloqueos.shift()
-                        PL.arr.push("QB");
-                        conteoQuantum = -1;
+                        PL.arr.push("QB")
+                        conteoQuantum = -2
                         procesoActual = getProcesoSiguiente()
                         if (procesoActual) {
                             procesoActual.estado = "Ejecucion"
@@ -271,7 +271,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                     procesoActual.estado = "En espera"
                 }
                 procesoActual = getProcesoSiguiente()
-                conteoQuantum = -1
+                conteoQuantum = -2
             }
 
             if (!procesoActual) {
