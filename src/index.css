@@ -58,3 +58,31 @@ code {
     background-position:70% 80%; /* Regresamos a la posición inicial */
   }
 }
+
+
+.green::after{
+  content: "En ejecución";
+  text-overflow: clip;
+  margin-left: 3rem;
+  white-space: nowrap;
+  color: gray;
+  font-size: 15px;
+}
+
+.grey::after{
+  content: "En Espera";
+  text-overflow: clip;
+  margin-left: 3rem;
+  white-space: nowrap;
+  color: gray;
+  font-size: 15px;
+}
+
+.rose::after{
+  content: "Bloqueado";
+  text-overflow: clip;
+  margin-left: 3rem;
+  white-space: nowrap;
+  color: gray;
+  font-size: 15px;
+}

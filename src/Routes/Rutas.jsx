@@ -1,5 +1,6 @@
 import React from 'react';
 import Principal from '../Pages/Principal'
+import Presentacion from '../Pages/Presentacion'
 import { Route, Routes } from 'react-router-dom';
 import Graphic from '../Pages/Graphic';
 
@@ -7,8 +8,7 @@ const Rutas = () => {
     return (
         <div>
             <Routes>
-                <Route path='/' element={<Graphic></Graphic>}>
-                    
+                <Route path='/' element={<Presentacion></Presentacion>}>
                 </Route>
                 <Route path='/FCFC' element={<Principal algoritmo={'FCFS'}>First come, first served</Principal>}>
                   

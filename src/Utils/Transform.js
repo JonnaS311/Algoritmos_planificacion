@@ -35,65 +35,62 @@ export function setAlgoritmo(value) {
 }
 
 export function normalizar(datos) {
-    console.log(datos)
     let resultado = []
+    let color = []
+    let nombres = []
     for (let index = 0; index < datos.length; index++) {
         resultado.push([])
+        color.push([])
+        nombres.push(datos[index].nombre)
         let info = datos[index].arr
         let actual = info[0]
         let count = 0
         for (let j = 0; j < info.length; j++) {
-            if(info[j] === actual){
-                count+=1
+            if (info[j] === actual) {
+                count += 1
             }
-            else{
+            else {
                 resultado[index].push(count)
+                color[index].push(obtenerColor(actual))
                 count = 1
                 actual = info[j]
             }
         }
         resultado[index].push(count)
+        color[index].push(obtenerColor(actual))
     }
-    console.log(resultado)
-    let maxLength = 0
-    for (let index = 0; index < resultado.length; index++) {        
-        if (resultado[index].length > maxLength) {
-            maxLength = resultado[index].length
-        }
-    }
-
+    nombres = nombres.reverse()
+    resultado = convertirDataset(resultado, color)
     for (let index = 0; index < resultado.length; index++) {
-        if(resultado[index].length < maxLength){
-            for (let j = 0; j < maxLength-resultado[index].length+1; j++) {
-                resultado[index].push(0)   
-            }
-        }
+        let tmp = { labels: [nombres[index]], datasets: resultado[index] }
+        resultado[index] = tmp
     }
-    resultado = transpose(resultado)
+    return resultado
 }
 
-
-function transpose(matrix) {
-    // Obtiene el número de filas y columnas de la matriz original
-    const rows = matrix.length;
-    const cols = matrix[0].length;
-
-    // Crea una nueva matriz para almacenar la transpuesta
-    let transposedMatrix = [];
-
-    // Itera sobre las columnas de la matriz original
-    for (let j = 0; j < cols; j++) {
-        // Crea una nueva fila para cada columna
-        let newRow = [];
-        // Itera sobre las filas de la matriz original
-        for (let i = 0; i < rows; i++) {
-            // Añade el elemento correspondiente a la nueva fila
-            newRow.push(matrix[i][j]);
+function convertirDataset(datos, colores) {
+    let dataset = []
+    for (let index = 0; index < datos.length; index++) {
+        dataset.push([])
+        for (let j = 0; j < datos[index].length; j++) {
+            dataset[index].push({
+                data: [datos[index][j]], backgroundColor: colores[index][j], // Rojo
+                borderColor: colores[index][j]
+            })
         }
-        // Añade la nueva fila a la matriz transpuesta
-        transposedMatrix.push(newRow);
+    }
+    return dataset.reverse()
+}
+
+function obtenerColor(tipo) {
+    if (tipo === 0) {
+        return 'rgba(255, 99, 132, 0)'
+    } else if (tipo === 'E') {
+        return 'rgba(99, 255, 124, 0.5)'
+    }else if (tipo === 'EE') {
+        return 'rgba(113, 116, 128, 0.5)'
+    } else if (tipo === 'B') {
+        return 'rgba(255, 99, 132, 0.5)'
     }
 
-    // Devuelve la matriz transpuesta
-    return transposedMatrix;
 }

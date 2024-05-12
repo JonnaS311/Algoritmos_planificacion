@@ -6,7 +6,7 @@ const Nav = ({children}) => {
         <div>
             <Router>
                 <nav className='flex justify-between px-10 py-7 fondo-animado text-white drop-shadow-xl'>
-                    <h1 className='text-xl'>Algoritmos de Planificación </h1>
+                    <h1 className='text-xl'><Link to='/'> Algoritmos de Planificación </Link></h1>
                     <ul className='flex space-x-4 divide-x divide-x-2'>
                         <li className='hover:text-blue-200 pl-2'><Link to='/FCFC'>FCFS</Link></li>
                         <li className='hover:text-blue-200 pl-2'><Link to='/SJF'>SJF</Link></li>
