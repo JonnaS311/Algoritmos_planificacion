@@ -230,12 +230,12 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                 PL.arr.push('00')
             }
 
-            if (PL.arr[cicloReloj] === '00'){
-                //console.log(cicloReloj)
-                //console.log(PL.arr[cicloReloj])
+            if (PL.arr[cicloReloj] !== '00'){
+                if (procesoActual) {
+                    procesoActual.estado = "En espera";
+                }
             }
             
-
             agregarColumnaTabla()
 
             let procesosBloqueados = listaProcesos.filter((p) => p.estado == "Bloqueado");
