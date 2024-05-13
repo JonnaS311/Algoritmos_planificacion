@@ -188,13 +188,13 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                 }
                 if (a === "EE") { enEspera++ }
                 if (a === "BB") { bloqueo++ }
-                if (a === 0) { inicio++ }
+                if (a === "00") { inicio++ }
                 if (a === "EE" && !ejecucionEncontrada) { tiempoRespuesta++ }
             })
             let retorno = instateFin - inicio
             let timepoPerdido = retorno - ejecucion
             let penalidad = (retorno / ejecucion).toFixed(2) // redondeado a dos decimales
-            estadistica.push([p.nombre, retorno, timepoPerdido, enEspera, penalidad, tiempoRespuesta])
+            estadistica.push([p.nombre, ejecucion, bloqueo, retorno, inicio, timepoPerdido, enEspera, penalidad, tiempoRespuesta])
         })
         return estadistica
     }
@@ -234,6 +234,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                 if (procesoActual) {
                     procesoActual.estado = "En espera";
                 }
+                procesoActual.ejecutado -= 1
             }
             
             agregarColumnaTabla()
@@ -316,7 +317,7 @@ function convertirTablaSalidaAMatriz(tablaSalida, PL) {
 
 AlgoritmosPlanificacion(tablaInstrucciones, 3)
 //console.log(tablaSalida)
-//console.log(estadistica)
+console.log(estadistica)
 //console.log(PL)
 
 let tablaSalidaComoMatriz = convertirTablaSalidaAMatriz(tablaSalida, PL);
