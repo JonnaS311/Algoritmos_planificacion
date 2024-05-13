@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import Proceso from './Proceso';
 import Boton from '../Boton';
 import { useTablaContext } from '../../Contexts/TablaDatos';
+import { cantidadBloqueos } from '../../Utils/Transform';
 const Tabla = () => {
     const [cantProcesos, setCantProcesos] = useState(1)
     const [cantBloqueos, setCantBloqueos] = useState(1)
     const {TablaDatos,setTablaDatos} = useTablaContext()
+    cantidadBloqueos.cant = 1
 
     const addProceso = (e) => {
         setCantProcesos(cantProcesos + 1)
-        TablaDatos.push([null,null,null,[null,null]])
+        TablaDatos.push([null,null,null])
+        for (let index = 0; index < cantBloqueos; index++) {
+            TablaDatos[TablaDatos.length-1].push([null,null])
+            
+        }
         setTablaDatos(Array.from(TablaDatos))
     }
 
@@ -28,6 +34,8 @@ const Tabla = () => {
             TablaDatos[index].push([null,null])
         }
         setTablaDatos(Array.from(TablaDatos))
+        cantidadBloqueos.cant = cantidadBloqueos.cant+1
+        console.log(cantidadBloqueos.cant)
     }
 
     const removeBloqueo = (e) => {
@@ -37,6 +45,8 @@ const Tabla = () => {
                 TablaDatos[index].pop()
             }
             setTablaDatos(Array.from(TablaDatos))
+            cantidadBloqueos.cant = cantidadBloqueos.cant-1
+            console.log(cantidadBloqueos.cant)
         }
 
     }

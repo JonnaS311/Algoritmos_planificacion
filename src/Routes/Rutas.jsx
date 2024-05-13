@@ -19,7 +19,7 @@ const Rutas = () => {
                 <Route path='/SRTF' element={<Principal algoritmo={'SRTF'}>Shortest remaining time first</Principal>}>
               
                 </Route>
-                <Route path='/RR' element={<Principal>Round Robin</Principal>}>
+                <Route path='/RR' element={<Principal algoritmo={'RR'}>Round Robin</Principal>}>
       
                 </Route>
                 <Route path='/Grafico' element={<Graphic></Graphic>}>

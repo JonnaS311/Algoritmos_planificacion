@@ -61,7 +61,7 @@ code {
 
 
 .green::after{
-  content: "En ejecución";
+  content: "En Ejecución";
   text-overflow: clip;
   margin-left: 3rem;
   white-space: nowrap;
@@ -80,6 +80,15 @@ code {
 
 .rose::after{
   content: "Bloqueado";
+  text-overflow: clip;
+  margin-left: 3rem;
+  white-space: nowrap;
+  color: gray;
+  font-size: 15px;
+}
+
+.blue::after{
+  content: "Planificador";
   text-overflow: clip;
   margin-left: 3rem;
   white-space: nowrap;

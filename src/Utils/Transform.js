@@ -1,5 +1,7 @@
 export let datosTabla = []
 export let algoritmo = ''
+export let maxValue = 0
+export let cantidadBloqueos = {cant:1}
 
 export function setDatos(datos) {
     datosTabla = Array.from(datos)
@@ -13,6 +15,10 @@ export function setDatos(datos) {
             }
         }
     }
+}
+
+export function cargarDatos(datos) {
+    datosTabla = datos
 }
 
 export function isValidTable(datos) {
@@ -38,6 +44,7 @@ export function normalizar(datos) {
     let resultado = []
     let color = []
     let nombres = []
+    maxValue = 0
     for (let index = 0; index < datos.length; index++) {
         resultado.push([])
         color.push([])
@@ -59,12 +66,23 @@ export function normalizar(datos) {
         resultado[index].push(count)
         color[index].push(obtenerColor(actual))
     }
+    for (let index = 0; index < resultado.length; index++) {
+        let tmp = 0
+        for (let k = 0; k < resultado[index].length; k++) {
+            tmp += resultado[index][k]
+        }
+        if(maxValue<tmp){
+            maxValue = tmp
+        }
+    }
     nombres = nombres.reverse()
     resultado = convertirDataset(resultado, color)
     for (let index = 0; index < resultado.length; index++) {
         let tmp = { labels: [nombres[index]], datasets: resultado[index] }
         resultado[index] = tmp
     }
+
+    console.log(resultado)
     return resultado
 }
 
@@ -91,6 +109,8 @@ function obtenerColor(tipo) {
         return 'rgba(113, 116, 128, 0.5)'
     } else if (tipo === 'B') {
         return 'rgba(255, 99, 132, 0.5)'
+    }else if (tipo === 'Q') {
+        return 'rgba(99, 132, 255, 0.5)'
     }
 
 }

@@ -28,12 +28,12 @@ const Estadisticas = ({data}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((value)=>{
+                    {data.map((value, index)=>{
                         return(
-                            <tr className='border-2 border-indigo-600 px-2'>
-                                {value.map((valor)=>{
+                            <tr className='border-2 border-indigo-600 px-2' key={index}>
+                                {value.map((valor,index)=>{
                                     return(
-                                        <td className='border-2 border-indigo-600 px-2'>{valor}</td>
+                                        <td className='border-2 border-indigo-600 px-2' key={index}>{valor}</td>
                                     )
                                 })}
                                 
