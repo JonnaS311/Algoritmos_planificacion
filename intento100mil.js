@@ -81,12 +81,12 @@ class Cola {
 }
 
 let tablaInstrucciones = [["A", 0, 8, [3, 4], [7, 2]],
-["B", 1, 3, [2, 5], null],
-["C", 3, 12, [1, 3], [8, 1]],
-["D", 5, 10, [1, 4], [2, 12]],
-["E", 9, 11, [4, 11], null],
-["F", 12, 9, [5, 3], [7, 4]],
-["G", 14, 10, null, null]]
+                          ["B", 1, 3, [2, 5], null],
+                          ["C", 3, 12, [1, 3], [8, 1]],
+                          ["D", 5, 10, [1, 4], [2, 12]],
+                          ["E", 9, 11, [4, 11], null],
+                          ["F", 12, 9, [5, 3], [7, 4]],
+                          ["G", 14, 10, null, null]]
 
 let listaProcesos = []
 let tablaSalida = [] // { nombre: p[0], arr: [] } Está es la tabla para gráficar
@@ -115,13 +115,11 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
     });
 
     let colaProcesos = new Cola()
-    let colaBloqueados = new Cola();
-
 
     const getProcesoSiguiente = () => {
 
         let colaProcesosEnEspera = new Cola()
-        
+
         if (!colaProcesos.estaVacia()) {
             colaProcesos.desencolar()
         }
@@ -154,16 +152,16 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
             let filaTabla = tablaSalida.find((f) => f.nombre == p.nombre);
             switch (p.estado) {
                 case "Nuevo":
-                    filaTabla.arr.push('00'); // Cuando todavía no ha llegado el proceso
+                    filaTabla.arr.push(0); // Cuando todavía no ha llegado el proceso
                     break;
                 case "En espera":
                     filaTabla.arr.push("EE");  // En espera
                     break;
                 case "Ejecucion":
-                    filaTabla.arr.push("EJ"); // Ejecución
+                    filaTabla.arr.push("E"); // Ejecución
                     break;
                 case "Bloqueado":
-                    filaTabla.arr.push("BB"); // Bloqueado
+                    filaTabla.arr.push("B"); // Bloqueado
                     break;
             }
         });
@@ -182,13 +180,13 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
             let ejecucionEncontrada = false
 
             p.arr.forEach((a) => {
-                if (a === "EJ") {
+                if (a === "E") {
                     ejecucion++
                     ejecucionEncontrada = true
                 }
                 if (a === "EE") { enEspera++ }
-                if (a === "BB") { bloqueo++ }
-                if (a === "00") { inicio++ }
+                if (a === "B") { bloqueo++ }
+                if (a === 0) { inicio++ }
                 if (a === "EE" && !ejecucionEncontrada) { tiempoRespuesta++ }
             })
             let retorno = instateFin - inicio
@@ -208,35 +206,47 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
 
         listaProcesos.forEach((p) => {
             if (p.llegada == cicloReloj && p.estado == "Nuevo") {
-                p.estado = "En espera";
+                p.estado = "En espera"
+                colaProcesos.encolar(p)
             }
-        });
+        })
 
         if (procesoActual) {
-            procesoActual.estado = "Ejecucion";
+            procesoActual.estado = "Ejecucion"
         }
 
         if (conteoQuantum === quantum) {
-            PL.arr.push("QQ")
+            PL.arr.push("Q")
             if (procesoActual && procesoActual.estado == "Ejecucion") {
                 procesoActual.estado = "En espera"
             }
+
+            let procesosBloqueados = listaProcesos.filter((p) => p.estado == "Bloqueado");
+            procesosBloqueados.forEach((pb) => {
+                pb.tiempoBloqueo = pb.tiempoBloqueo - 1;
+                if (pb.tiempoBloqueo == 0) {
+                    pb.estado = "En espera"
+                    colaProcesos.encolar(pb)
+                }
+            });
+
             agregarColumnaTabla()
             procesoActual = getProcesoSiguiente()
             conteoQuantum = -1
+
         } else {
 
-            if (cicloReloj === PL.arr.length){
-                PL.arr.push('00')
+            if (cicloReloj === PL.arr.length) {
+                PL.arr.push(0)
             }
 
-            if (PL.arr[cicloReloj] !== '00'){
+            if (PL.arr[cicloReloj] !== 0) {
                 if (procesoActual) {
-                    procesoActual.estado = "En espera";
+                    procesoActual.estado = "En espera"
+                    procesoActual.ejecutado -= 1
                 }
-                procesoActual.ejecutado -= 1
             }
-            
+
             agregarColumnaTabla()
 
             let procesosBloqueados = listaProcesos.filter((p) => p.estado == "Bloqueado");
@@ -244,6 +254,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                 pb.tiempoBloqueo = pb.tiempoBloqueo - 1;
                 if (pb.tiempoBloqueo == 0) {
                     pb.estado = "En espera"
+                    colaProcesos.encolar(pb)
                 }
             });
 
@@ -255,7 +266,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
                         procesoActual.tiempoBloqueo = procesoActual.bloqueos[0][1]
                         procesoActual.cantidadBloqueos--
                         procesoActual.bloqueos.shift()
-                        PL.arr.push("QB")
+                        PL.arr.push("Q")
                         conteoQuantum = -2
                         procesoActual = getProcesoSiguiente()
                         if (procesoActual) {
@@ -267,7 +278,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
 
             if (procesoActual && procesoActual.ejecutado == procesoActual.ejecucion) {
                 procesoActual.estado = "Terminado"
-                PL.arr.push("QT")
+                PL.arr.push("Q")
                 if (procesoActual && procesoActual.estado == "Ejecucion") {
                     procesoActual.estado = "En espera"
                 }
@@ -288,37 +299,9 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
     }
 
     tablaEstadisticas()
+    tablaSalida.push(PL)
     return tablaSalida, estadistica
 }
 
-function convertirTablaSalidaAMatriz(tablaSalida, PL) {
-    let matriz = [];
-
-    // Encabezados de columna para la tabla de salida
-    let encabezadosTabla = ['X'];
-    for (let i = 1; i < tablaSalida[0].arr.length + 1; i++) {
-        encabezadosTabla.push(i);
-    }
-    matriz.push(encabezadosTabla);
-
-    // Datos de PL
-    matriz.push(['P', ...PL.arr]);
-
-    // Datos de la tabla de salida
-    tablaSalida.forEach((fila) => {
-        let filaMatriz = [fila.nombre, ...fila.arr];
-        matriz.push(filaMatriz);
-    });
-
-    return matriz;
-}
-
-
 
 AlgoritmosPlanificacion(tablaInstrucciones, 3)
-//console.log(tablaSalida)
-console.log(estadistica)
-//console.log(PL)
-
-let tablaSalidaComoMatriz = convertirTablaSalidaAMatriz(tablaSalida, PL);
-console.log(tablaSalidaComoMatriz);
