@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 const Principal = ({ children, algoritmo }) => {
     const [TablaDatos, setTablaDatos] = useState([[null, null, null, [null, null]]])
+    const [mensaje, setMensaje] = useState('')
 
     const clicked = () => {
         setDatos(TablaDatos)
@@ -14,10 +15,11 @@ const Principal = ({ children, algoritmo }) => {
     }
 
     const checked = () => {
-        if (isValidTable(TablaDatos)) {
+        const [valides, mensaje] = isValidTable(TablaDatos)
+        if (valides) {
             return <Link to='/Grafico'> <Boton onClick={clicked}> Ejecutar Simulación</Boton></Link>
         } else {
-            return <h1>Los datos son inconsistentes</h1>
+            return <h1>Los datos son inconsistentes: {mensaje}</h1>
         }
     }
 
@@ -46,6 +48,19 @@ const Principal = ({ children, algoritmo }) => {
         cantidadBloqueos.cant = 1
     }
 
+    const datos_three = () => {
+        setAlgoritmo(algoritmo)
+        let tablaInstrucciones = [["Word    ", 0, 20, [2, 10], [15, 6]],
+        ["Notepad  ", 2, 8, [6, 12],[7, 4] ],
+        ["Photoshop", 3, 12, null, [8, 1]],
+        ["Chrome   ", 5, 10, [1, 4], [2, 12]],
+        ["Excel    ", 9, 11, [4, 11], null],
+        ["Fortnite ", 10, 9, null, null],
+        ["Dofus    ", 11, 6, [4, 5], [10, 3]]]
+        cargarDatos(tablaInstrucciones)
+        cantidadBloqueos.cant = 2
+    }
+
     return (
         <div className='p-10 flex justify-center items-center flex-col'>
             <h1 className='text-indigo-700 text-3xl mb-10'>Estas dentro del Algoritmo <b>{children}</b></h1>
@@ -58,7 +73,7 @@ const Principal = ({ children, algoritmo }) => {
                     <Link to='/Grafico' >
                         <Boton onClick={datos_one}>Dataset 1</Boton>
                         <Boton onClick={datos_two}>Dataset 2</Boton>
-                        <Boton onClick={datos_one}>Dataset 3</Boton>
+                        <Boton onClick={datos_three}>Dataset 3</Boton>
                     </Link>
                     <p className='text-[10px] text-center'>Los siguientes son conjuntos de datos precargados para no tener que estar llenando la tabla</p>
                 </div> 

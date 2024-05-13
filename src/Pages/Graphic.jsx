@@ -36,7 +36,9 @@ const Graphic = () => {
     estadistica.current = estadisticas
     options.scales.x.max = maxValue
   }else if(algoritmo === "RR"){
-    quantum = parseInt(prompt("ingrese el quantum"))
+    do{
+      quantum = parseInt(prompt("ingrese el quantum"))
+    }while (!(quantum > 0 && Number.isInteger(quantum)))
     const [output, estadisticas] = setterEstadoRR(datosTabla, quantum)
     console.log(output)
     dataset.current = normalizar(output)  

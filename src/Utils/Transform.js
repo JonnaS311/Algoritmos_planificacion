@@ -21,19 +21,40 @@ export function cargarDatos(datos) {
     datosTabla = datos
 }
 
+function tieneElementosRepetidos(array) {
+    return new Set(array).size !== array.length;
+}
+
 export function isValidTable(datos) {
+    let nombres = []
     for (let index = 0; index < datos.length; index++) {
+        nombres.push(datos[index][0])
+        // nombre
         if (datos[index][0] === null || datos[index][0] === "") {
-            return false
-        }
+            return [false,'faltan nombres']
+        }// llegada
         else if (datos[index][1] === null || datos[index][1] === "") {
-            return false
-        }
+            return [false,'faltan llegadas']
+        }// duracion
         else if (datos[index][2] === null || datos[index][2] === "") {
-            return false
+            return [false,'faltan duraciones']
+        }
+        // validamos que la duración del proceso no sea menor a 1
+        if(datos[index][2] < 1){
+            return [false,'Duración inferior a 1']
+        }
+        for (let j = 3; j < datos[index].length; j++) {
+            // verificamos si la duración de un bloqueo es 0
+            if (datos[index][j][1] === 0 ) {
+                return [false,'Bloqueo con duración 0']
+            }
         }
     }
-    return true
+     // validar nombre repetidos
+     if (tieneElementosRepetidos(nombres)) {
+        return [false,'nombres de proceso repetidos']
+     }
+    return [true, 'ok']
 }
 
 export function setAlgoritmo(value) {

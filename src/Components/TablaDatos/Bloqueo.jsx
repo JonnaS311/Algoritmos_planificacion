@@ -13,8 +13,8 @@ const Bloqueo = ({ id, numberBlock }) => {
     }
     return (
         <div key={id} className='flex'>
-            <Input isNumeric={true} onChange={addBloqueo} nombre={'0'}></Input>
-            <Input isNumeric={true} onChange={addBloqueo} nombre={'1'}></Input>
+            <Input isNumeric={true} onChange={addBloqueo} nombre={'0'} placeholder={'llegada'}></Input>
+            <Input isNumeric={true} onChange={addBloqueo} nombre={'1'} placeholder={'duración'}></Input>
         </div>
     );
 };

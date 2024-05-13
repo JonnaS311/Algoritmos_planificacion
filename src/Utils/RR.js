@@ -194,7 +194,7 @@ function AlgoritmosPlanificacion(tablaInstrucciones, quantum) {
             let retorno = instateFin - inicio
             let timepoPerdido = retorno - ejecucion
             let penalidad = (retorno / ejecucion).toFixed(2) // redondeado a dos decimales
-            estadistica.push([p.nombre, ejecucion, bloqueo, retorno, inicio, timepoPerdido, enEspera, penalidad, tiempoRespuesta])
+            estadistica.push([p.nombre, retorno, timepoPerdido, enEspera, penalidad, tiempoRespuesta]) //    estadistica.push([p.nombre, retorno, timepoPerdido, enEspera, penalidad, tiempoRespuesta])
         })
         return estadistica
     }
